@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+    <title>Document</title>
+</head>
+<script>
+    var selected = null
+
+    function ondivclick(e) {
+        e.preventDefault();
+       console.log(e);
+       if(selected){
+        document.getElementById(selected).className= 'column';
+        
+       } 
+        selected = e.target.innerHTML ; 
+        document.getElementById(selected).className= 'selected';
+        document.getElementById('selected-slot').innerHTML= selected;
+        document.getElementById('slot').value = selected;
+        document.getElementById('length').value = {{l}}+1
+    }
+
+</script>
+
+<body>
+
+   
+    <div class="App ">
+        <div class='navbar'>
+          Here goes navbar</div>  
+  
+          <div class='slots'>
+          <h2>The Slots</h2>  
+  
+   {% for i in range(booked|length) %}
+       {{i}}
+{% endfor %}
+
+<div class='rows'>  {% for i in slots %}
+                        {% if i in booked %}
+                            <div class="booked">{{i}}</div>
+                        {% else %} 
+                    <div class="column" id={{i}} onclick="ondivclick(event)">{{i}}</div>
+                        {% endif %}
+{% endfor %}
+</div>
+{{booked}}  
+          
+ <form action="/updation" method="POST">
+  <input type="text" name="slot" id="slot" readonly>
+  <input type="number" name="length" id="length" readonly>
+  <h3>Selected slot is <h2 id="selected-slot" ></h2></h3>
+  <input type="submit" ></input>
+</form>
+  
+  
+  
+  
+          </div>    
+      </div>
+</body>
+</html>
