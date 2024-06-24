@@ -7,20 +7,61 @@
     <title>Document</title>
 </head>
 <script>
-    var selected = null
-
-    function ondivclick(e) {
+    var bookselected = null
+    var debookselected = null
+    function book(e) {
         e.preventDefault();
-       console.log(e);
-       if(selected){
-        document.getElementById(selected).className= 'column';
+        
+        if(debookselected){
+        document.getElementById(debookselected).className= 'booked';
+        debookselected = null;
+       } 
+       if(bookselected){
+        document.getElementById(bookselected).className= 'column';
         
        } 
-        selected = e.target.innerHTML ; 
-        document.getElementById(selected).className= 'selected';
-        document.getElementById('selected-slot').innerHTML= selected;
-        document.getElementById('slot').value = selected;
-        document.getElementById('length').value = {{l}}+1
+        bookselected = e.target.innerHTML ; 
+        document.getElementById(bookselected).className= 'selected';
+        document.getElementById('selected-slot').innerHTML= bookselected;
+        document.getElementById('slot').value = bookselected;
+        document.getElementById('length').value = {{l}} +1 ;
+    }
+
+    function deBook(e) {
+        e.preventDefault();
+       
+       if(bookselected){
+        document.getElementById(bookselected).className= 'column';
+        bookselected = null;
+       } 
+       if(debookselected){
+        document.getElementById(debookselected).className= 'booked';
+        
+       } 
+        debookselected = e.target.innerHTML ; 
+        document.getElementById(debookselected).className= 'selected';
+        document.getElementById('deselected-slot').innerHTML= debookselected;
+        document.getElementById('deslot').value = debookselected;
+    }
+
+    function buttonClick(){
+        document.getElementById(
+                    "overlay"
+                ).style.display = "block";
+                document.getElementById(
+                    "popupDialog"
+                ).style.display = "block";
+            }
+
+    function closePopup (){
+    
+                document.getElementById(
+                    "overlay"
+                ).style.display = "none";
+                document.getElementById(
+                    "popupDialog"
+                ).style.display = "none";
+
     }
 
 </script>
@@ -31,35 +72,84 @@
     <div class="App ">
         <div class='navbar'>
           Here goes navbar</div>  
-  
-          <div class='slots'>
-          <h2>The Slots</h2>  
-  
-   {% for i in range(booked|length) %}
-       {{i}}
-{% endfor %}
 
-<div class='rows'>  {% for i in slots %}
-                        {% if i in booked %}
-                            <div class="booked">{{i}}</div>
-                        {% else %} 
-                    <div class="column" id={{i}} onclick="ondivclick(event)">{{i}}</div>
-                        {% endif %}
-{% endfor %}
-</div>
-{{booked}}  
+          <div id="overlay" onclick="closePopup()"></div>
+        <div id="popupDialog">
+            <form action="/updation" method="POST">
+                <input type="text" name="slot" id="slot" readonly>
+                <input type="text" name="vno" id="vno" placeholder="Enter Vehicle Number">
+                <input type="text" name="brand" id="brand" placeholder="Enter Brand">
+                <h3>Selected slot is <h2 id="selected-slot" ></h2></h3>
+                <button class="pushable" onclick="closePopup()">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front">
+                    <input type="submit" id="submit"></input>
+                    </span>
+                  </button>
+                
+              </form>
+
+              <button class="pushable" onclick="closePopup()">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">
+                  Close
+                </span>
+              </button>
+            
+        </div>
+          <div class="main">
+            <div class='slots'>
+                <h2>The Booking Slots</h2>  
+        
+      
+      
+      <div class='rows'>  {% for i in slots %}
+                              {% if i in booked %}
+                                  <div class="booked" >{{i}}</div>
+                              {% else %} 
+                          <div class="column" id={{i}} onclick="book(event)">{{i}}</div>
+                              {% endif %}
+      {% endfor %}
+      </div>
+                
+       
+        
+      <button class="pushable" onclick="buttonClick()">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <span class="front">
+          Push Me
+        </span>
+      </button>
+        
+        
+                </div> 
+                <div class='slots'>
+                    <h2>The Debooking Slots</h2>  
+            
           
- <form action="/updation" method="POST">
-  <input type="text" name="slot" id="slot" readonly>
-  <input type="number" name="length" id="length" readonly>
-  <h3>Selected slot is <h2 id="selected-slot" ></h2></h3>
-  <input type="submit" ></input>
-</form>
-  
-  
-  
-  
-          </div>    
+          
+          <div class='rows'>  {% for i in slots %}
+                                  {% if i in booked %}
+                                      <div class="booked" id={{i}} onclick="deBook(event)">{{i}}</div>
+                              
+                                  {% endif %}
+          {% endfor %}
+          </div>
+                    
+           <form action="/deletion" method="POST">
+            <input type="text" name="deslot" id="deslot" readonly>
+            <h3>Selected slot is <h2 id="deselected-slot" ></h2></h3>
+            <input type="submit" ></input>
+          </form>
+            
+            
+            
+            
+                    </div> 
+          </div>   
       </div>
 </body>
 </html>

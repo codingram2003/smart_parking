@@ -14,11 +14,14 @@ mysql = MySQL(app)
 slots =['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3', 'D1', 'D2', 'D3']
 @app.route('/')
 def hello():
+    '''
     curr= mysql.connection.cursor()
     booked = curr.execute("SELECT * FROM slots")
     booked = list(curr.fetchall())
     for i in range(len(booked)):
         booked[i] = booked[i][1]
+    '''
+    booked = ['A1', 'B3', 'C2']
     return render_template('landing.html', slots=slots, booked = booked, l= len(booked))
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -27,7 +30,7 @@ def index():
         details = request.form
         slot = details['fname']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO slots(SlNo, slot) VALUES (10, %s)", [firstNam])
+        cur.execute("INSERT INTO slots(SlNo, slot, vno, brand) VALUES (10, %s)", [firstNam])
         mysql.connection.commit()
         cur.close()
         return 'success'
@@ -37,9 +40,22 @@ def index():
 def update():
         details = request.form
         slot = details['slot']
+        vno = details['vno']
+        brand = details['brand']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO slots(slot, vno, brand) VALUES (%s, %s, %s)", [slot, vno, brand])
+        mysql.connection.commit()
+        cur.close()
+        return redirect('/')
+
+
+@app.route('/deletion', methods=['POST'])
+def update():
+        details = request.form
+        slot = details['slot']
         length = details['length']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO slots(SlNo, slot) VALUES (%s, %s)", [length, slot])
+        cur.execute("DELETE FROM slots WHERE slot = %s", [slot])
         mysql.connection.commit()
         cur.close()
         return redirect('/')
