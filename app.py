@@ -14,14 +14,13 @@ mysql = MySQL(app)
 slots =['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3', 'D1', 'D2', 'D3']
 @app.route('/')
 def hello():
-    '''
+    
     curr= mysql.connection.cursor()
     booked = curr.execute("SELECT * FROM slots")
     booked = list(curr.fetchall())
     for i in range(len(booked)):
-        booked[i] = booked[i][1]
-    '''
-    booked = ['A1', 'B3', 'C2']
+        booked[i] = booked[i][0]
+    
     return render_template('landing.html', slots=slots, booked = booked, l= len(booked))
 
 @app.route('/update', methods=['GET', 'POST'])
@@ -37,7 +36,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/updation', methods=['POST'])
-def update():
+def updation():
         details = request.form
         slot = details['slot']
         vno = details['vno']
@@ -52,8 +51,8 @@ def update():
 @app.route('/deletion', methods=['POST'])
 def update():
         details = request.form
-        slot = details['slot']
-        length = details['length']
+        slot = details['deslot']
+    #    length = details['length']
         cur = mysql.connection.cursor()
         cur.execute("DELETE FROM slots WHERE slot = %s", [slot])
         mysql.connection.commit()
