@@ -69,8 +69,8 @@ table {
     display: grid;
     width:60%;
     margin:0 auto;
-    grid-template-columns: 8vw 8vw 8vw;
-    grid-template-rows: 11vw 11vw 11vw 11vw;
+    grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px 30px;
+    grid-template-rows: 30px 30px 30px 30px 30px 30px 30px 30px 30px;
     gap: 10px;
     text-align: center;
     justify-content: center;

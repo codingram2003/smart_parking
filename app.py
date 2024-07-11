@@ -10,8 +10,13 @@ app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'slots'
 
 mysql = MySQL(app)
-
-slots =['A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3', 'D1', 'D2', 'D3']
+bays = ['A','B','C','D','E','F','G','H','I']
+s= ['1','2','3','4','5','6','7','8','9']
+slots =[]
+for i in range(len(bays)):
+    for j in range(len(s)):
+        slots.append(bays[i] + s[j])
+print(slots)
 @app.route('/')
 def hello():
     
