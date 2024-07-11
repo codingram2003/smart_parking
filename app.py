@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect
-from flask_mysqldb import MySQL
+#from flask_mysqldb import MySQL
 app = Flask(__name__)
 
-
+'''
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -10,6 +10,7 @@ app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'slots'
 
 mysql = MySQL(app)
+'''
 bays = ['A','B','C','D','E','F','G','H','I']
 s= ['1','2','3','4','5','6','7','8','9']
 slots =[]
@@ -20,11 +21,12 @@ print(slots)
 @app.route('/')
 def hello():
     
-    curr= mysql.connection.cursor()
+    '''curr= mysql.connection.cursor()
     booked = curr.execute("SELECT * FROM slots")
     booked = list(curr.fetchall())
     for i in range(len(booked)):
-        booked[i] = booked[i][0]
+        booked[i] = booked[i][0]'''
+    booked = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'F6']
     
     return render_template('landing.html', slots=slots, booked = booked, l= len(booked))
 
